@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+  {% include "navbar.html" %}
+  <ul class="w-screen">
+    {% for item in api_resp.data.children %}
+      <li class="py-2 pl-1 border-t-2 border-slate-100">
+        <div class="flex">
+          <div class="w-12 flex flex-col justify-center justify-items-center content-center items-center">
+            <span class="block hover:text-orange-600 cursor-pointer">⌃</span>
+            <small class="block font-bold text-slate-800">{{ item.data.score }}</small>
+            <span class="block hover:text-blue-600 cursor-pointer">⌄</span>
+          </div>
+          <div class="flex-1 px-3">
+            <a href="{{ item.data.permalink }}" class="font-medium text-blue-600 hover:text-blue-800 visited:text-purple-600">
+              {{ item.data.title }}
+            </a>
+            <br>
+            <small>
+              submitted 10 hours ago by
+              <a href="https://www.reddit.com/u/{{ item.data.author }}" class="text-sky-500 dark:text-sky-400">
+                {{ item.data.author }}
+              </a>
+              to <a class="font-bold text-sky-600 hover:text-sky-800" href="/r/{{ item.data.subreddit }}">{{ item.data.subreddit }}</a>
+              <br>
+              <b>
+                <a href="{{ item.data.permalink }}">
+                  comments: {{ item.data.num_comments }}
+                </a>
+              </b>
+            </small>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <nav class="m-4">
+  {% if api_resp.data.before %}
+  <a class="border-2 rounded border-slate-500 px-2 py-1 text-blue-800 font-bold text-sm" href="?count={{ request.query_params.get('count', 0) | int - 25 }}&before={{ api_resp.data.before }}">prev</a>
+  {% endif %}
+  <a class="border-2 rounded border-slate-500 px-2 py-1 text-blue-800 font-bold text-sm" href="?count={{ request.query_params.get('count', 0) | int + 25 }}&after={{ api_resp.data.after }}">next</a>
+  </nav>
+
+{% endblock %}

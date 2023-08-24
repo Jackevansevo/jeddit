@@ -1,0 +1,87 @@
+<nav class="w-100">
+  <ul class="flex flex-row text-xs pl-1 bg-slate-100 border-solid border-b border-black py-1">
+    {% if user %}
+      <li class="uppercase pr-2 {% if request.url.path in ["/", "/best", "/hot", "/new", "/rising", "/controversial", "/top", "/gilded"] %} font-bold text-orange-600{% endif %}">
+        <a href="/">Home</a>
+      </li>
+      <li class="uppercase pr-2 {% if "/r/popular/" in request.url.path or (not user and request.url.path == "/") %} font-bold text-orange-600{% endif %}">
+        <a href="/r/popular">Popular</a>
+      </li>
+    {% else %}
+      <li class="uppercase pr-2 {% if request.url.path == "/r/popular/" or request.url.path == "/" %} font-bold text-orange-600{% endif %}">
+        <a href="/r/popular">Popular</a>
+      </li>
+    {% endif %}
+
+    <li class="uppercase pr-2 {% if "/r/all" in request.url.path %} font-bold text-orange-600{% endif %}">
+      <a href="/r/all">All</a>
+    </li>
+
+    <li class="uppercase pr-2">
+      <a href="/r/random">Random</a>
+    </li>
+
+    <span style="margin-left: auto;" class="flex flex-row">
+    <li>
+      {% if user %}
+        <a class="underline text-blue-500" href="/logout">Logout</a>
+        <a class="underline text-blue-500 pl-2" href="/u/{{ user.name }}">{{ user.name }}</a>
+      {% else %}
+        <a class="underline text-blue-500" href="/login">Login</a>
+      {% endif %}
+    </li>
+    <div class="pl-2">Rate Limit: {{ api_stats.get('used') }} reqs ({{ api_stats.get('remaining') | int }} remaining)</div>
+    </span>
+  </ul>
+
+  <div class="w-100 bg-blue-100 pl-1 pt-2">
+
+    {% if subreddit %}
+      <h1 class="text-2xl mb-1">{{ subreddit }}</h1>
+    {% endif %}
+
+    {% if not comments %}
+      <ul class="flex flex-row text-xs">
+        {% if not subreddit and user %}
+          <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if request.url.path == "/best" or request.url.path == "/" %}font-bold text-orange-600{% endif %}">
+            <a href="/">best</a>
+          </li>
+        {% endif %}
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if '/hot' in request.url.path or (subreddit and request.url.path.endswith('/r/' + subreddit + '/')) %}font-bold text-orange-600{% endif %}">
+          <a href="hot">hot</a>
+        </li>
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if "/new" in request.url.path %}font-bold text-orange-600{% endif %}">
+          <a href="new">new</a>
+        </li>
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if "/rising" in request.url.path %}font-bold text-orange-600{% endif %}">
+          <a href="rising">rising</a>
+        </li>
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if "/controversial" in request.url.path %}font-bold text-orange-600{% endif %}">
+          <a href="controversial">controversial</a>
+        </li>
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if "/top" in request.url.path %}font-bold text-orange-600{% endif %}">
+          <a href="top">top</a>
+        </li>
+        <li class="bg-white mr-1 pl-2 pr-2 border-t-2 border-l-2 border-r-2 border-slate-500 rounded-t {% if "/gilded" in request.url.path %}font-bold text-orange-600{% endif %}">
+          <a href="gilded">gilded</a>
+        </li>
+      </ul>
+      </div>
+    {% endif %}
+  </nav>
+
+  {% if "/top" in request.url.path %}
+    <form action="{{ request.url.path }}" class="p-2">
+      <label for="time">links from:</label>
+      <select name="t" id="t">
+        <option value="hour" {% if "hour" in request.url.query %}selected{% endif %}>past hour</option>
+        <option value="day" {% if "day" in request.url.query %}selected{% endif %}>past 24 hours</option>
+        <option value="week" {% if "week" in request.url.query %}selected{% endif %}>past week</option>
+        <option value="month" {% if "month" in request.url.query %}selected{% endif %}>past month</option>
+        <option value="year" {% if "year" in request.url.query %}selected{% endif %}>past year</option>
+        <option value="all" {% if "all" in request.url.query %}selected{% endif %}>all time</option>
+      </select>
+      <input type="submit" value="Submit">
+    </form>
+  {% endif %}
+

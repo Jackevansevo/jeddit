@@ -1,0 +1,23 @@
+{% for comment in comments %}
+  <li class="p-1 pt-2">
+    {% if comment.data.kind == "more" %}
+      load more comments ({{ comment.data.count }} replies)
+    {% else %}
+      <span class="xcollapse font-mono cursor-pointer">[-]</span>
+      <b><a href="https://www.reddit.com/u/{{ comment.data.author }}">{{ comment.data.author }}</a></b> {{ comment.data.score }} points
+      <br>
+      <div class="commentBody">
+        <div class="prose prose-slate">
+          {{ comment.data.body|marked|safe }}
+        </div>
+        {% if comment.data.replies %}
+          <ul class="pl-4 border-l-2 border-slate-300">
+            {% with comments=comment.data.replies.data.children %}
+              {% include "comments.html" %}
+            {% endwith %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+    <li>
+{% endfor %}

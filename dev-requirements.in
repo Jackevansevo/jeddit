@@ -1,0 +1,7 @@
+# dev-requirements.in
+-c requirements.txt
+black
+flake8
+ipdb
+isort
+mypy

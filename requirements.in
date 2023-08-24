@@ -1,0 +1,5 @@
+uvicorn[standard]
+mistletoe
+commonmark
+redis
+fastapi[all]

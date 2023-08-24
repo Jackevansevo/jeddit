@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block body %}
+  {% include "navbar.html" %}
+  <div class="p-4">
+    <h3><a href="/r/{{ subreddit }}">{{ subreddit }}</a></h3>
+
+    <small>Posted by {{ post.data.author }} {{ post.data.created_utc }} hours ago</small>
+
+    <hr>
+    <br>
+
+    <h1 class="flex-auto text-lg font-semibold text-slate-900">
+      {{ post.data.title }} - <a href="https://www.reddit.com/u/{{ post.data.author }}">{{ post.data.author }}</a>
+    </h1>
+
+    <div class="pt-2">
+      <span class="prose prose">
+        {% if post.data.selftext %}
+          {{ post.data.selftext|marked|safe }}
+        {% endif %}
+      </span>
+    </div>
+
+    <br>
+
+    {% if post.data.media %}
+      {% if post.data.media.reddit_video %}
+        <video src="{{ post.data.media.reddit_video.fallback_url }}" controls></video>
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+  <hr>
+
+  <ul class="p-2">
+    {% include "comments.html" %}
+  </ul>
+
+  <script>
+    $('.xcollapse').on('click', function(event) {
+      event.stopPropagation()
+      if ($(this).text() === "[-]") {
+        $(this).parent('li').css('color', 'gray');
+        $(this).parent().find('.commentBody').hide();
+        $(this).text("[+]");
+      } else {
+        $(this).parent().css('color', 'black');
+        $(this).parent().find('.commentBody').show();
+        $(this).text("[-]");
+      }
+    })
+  </script>
+{% endblock %}
