@@ -1,5 +1,4 @@
-[Screencast from 2023-08-31 16-11-57.webm](https://github.com/Jackevansevo/jeddit/assets/4996338/99a83d2c-9eca-4f54-901d-c660dba674fb)
-
+[Screencast from 2023-08-31 16-31-14.webm](https://github.com/Jackevansevo/jeddit/assets/4996338/9ffbbec7-25af-47c1-b1f5-4a194576663b)
 
 # Local Development
 
