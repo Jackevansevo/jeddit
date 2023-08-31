@@ -30,7 +30,7 @@
         <a class="underline text-blue-500" href="/login">Login</a>
       {% endif %}
     </li>
-    <div class="pl-2">Rate Limit: {{ api_stats.get('used') }} reqs ({{ api_stats.get('remaining') | int }} remaining)</div>
+    <div class="pl-2 hidden sm:block">Rate Limit: {{ api_stats.get('used') }} reqs ({{ api_stats.get('remaining') | int }} remaining)</div>
     </span>
   </ul>
 

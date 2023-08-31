@@ -28,6 +28,13 @@ The application expects the following secrets to be present in an .env file:
     REDIRECT_URI=<NGROK_URL>/auth
 
 
+Run the app with: 
+
+    uvicorn app:app --reload
+
+    npx tailwindcss -i ./input.css -o ./static/output.css --watch
+
+
 # Deploying with fly.io
 
     fly launch
